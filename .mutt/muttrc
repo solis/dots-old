@@ -1,0 +1,97 @@
+source "gpg2 -dq $HOME/.pwds.gpg |"
+source ~/.mutt/muttcs
+
+set mailcap_path 	= ~/.mutt/mailcap
+auto_view text/html
+
+alternative_order text/plain text/html
+
+macro attach 'V' "<pipe-entry>cat >~/.cache/mutt/mail.html && $BROWSER ~/.cache/mutt/mail.html && rm ~/.cache/mutt/mail.html<enter>"i]p
+
+set editor="nano +7"
+
+set markers=no
+
+# A basic .muttrc for use with Gmail
+
+# Change the following six lines to match your Gmail account details
+set imap_user=lacus.soli@gmail.com
+set imap_pass=$my_pwd_personal
+set smtp_url=smtp://$imap_user:$imap_pass@smtp.gmail.com:587
+set from = lacus.soli@gmail.com
+set realname = "Alexander Paulau"
+
+# Basic config, you can leave this as is
+set folder = "imaps://imap.gmail.com:993"
+set spoolfile = "+INBOX"
+
+mailboxes =INBOX =orienteering
+mailboxes imaps://imap.gmail.com/INBOX imaps://imap.gmail.com/orienteering
+
+#set imap_check_subscribed
+set hostname = gmail.com
+
+# Allow Mutt to open new imap connection automatically.
+unset imap_passive
+
+# How often to check for new mail (time in seconds).
+set mail_check = 120
+
+set timeout = 300
+
+# Keep IMAP connection alive by polling intermittently (time in seconds).
+set imap_keepalive = 300
+
+# Specify where to save and/or look for postponed messages.
+set postponed = "+[Gmail]/Drafts"
+set record = "+[Gmail]/Sent"
+
+# Store message headers locally to speed things up.
+# If hcache is a folder, Mutt will create sub cache folders for each account which may speeds things even more up.
+set header_cache=~/.mutt/cache/headers
+
+# Store messages locally to speed things up, like searching message bodies.
+# Can be the same folder as header_cache.
+# This will cost important disk usage according to your e-mail amount.
+set message_cachedir=~/.mutt/cache/bodies
+
+set certificate_file=~/.mutt/certificates
+
+set move = no
+set include
+set sort = 'threads'
+set sort_aux = 'reverse-last-date-received'
+set auto_tag = yes
+ignore "Authentication-Results:"
+ignore "DomainKey-Signature:"
+ignore "DKIM-Signature:"
+hdr_order Date From To Cc
+alternative_order text/plain text/html *
+auto_view text/html
+bind editor <Tab> complete-query
+bind editor ^T complete
+bind editor <space> noop 
+
+# Gmail-style keyboard shortcuts
+macro index,pager y "<enter-command>unset trash\n <delete-message>" "Gmail archive message"
+macro index,pager d "<enter-command>set trash=\"imaps://imap.googlemail.com/[Gmail]/Bin\"\n <delete-message>" "Gmail delete message"
+macro index,pager gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index,pager ga "<change-folder>=[Gmail]/All Mail<enter>" "Go to all mail"
+macro index,pager gs "<change-folder>=[Gmail]/Starred<enter>" "Go to starred messages"
+macro index,pager gd "<change-folder>=[Gmail]/Drafts<enter>" "Go to drafts"
+
+set sidebar_visible = yes
+macro index b '<enter-command>toggle sidebar_visible<enter><refresh>'
+macro pager b '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
+
+# Ctrl-n, Ctrl-p to select next, previous folder.
+# Ctrl-o to open selected folder.
+bind index,pager \CP sidebar-prev
+bind index,pager \CN sidebar-next
+bind index,pager \CO sidebar-open
+
+set sidebar_sort = yes
+
+
+folder-hook .*[sS]ent.* 'set my_col_from = `echo $((30 * ($(tput cols)-35-24) / 100))`; set my_col_subject = `echo $((70 * ($(tput cols)-35-24) / 100))`; set index_format="%2C | %Z [%d] %-$my_col_from.${my_col_from}t (%-4.4c) %-$my_col_subject.${my_col_subject}s"'
+folder-hook ! .*[sS]ent.* 'set my_col_from = `echo $((30 * ($(tput cols)-35-24) / 100))`; set my_col_subject = `echo $((70 * ($(tput cols)-35-24) / 100))`; set index_format="%2C | %Z [%d] %-$my_col_from.${my_col_from}F (%-4.4c) %-$my_col_subject.${my_col_subject}s"'

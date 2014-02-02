@@ -1,0 +1,36 @@
+#include ".colors/multicolor"
+
+Xft.autohint                 : 0
+Xft.lcdfilter                : lcddefault
+Xft.hintstyle                : hintsfull
+Xft.hinting                  : 1
+Xft.antialias                : 1
+Xft.rgba                     : rgb
+
+Xcursor.theme                : Vanilla-DMZ-AA
+
+!URxvt*.transparent: true
+! URxvt*.shading: 0 to 99 darkens, 101 to 200 lightens
+!URxvt*.shading: 22
+
+*.charClass                  : 33:48,35:48,37:48,43:48,45-47:48,64:48,95:48,126:48,35:48,58:48,63:48,61:48,44:48,38:48,59:48
+*.saveLines                  : 4096
+URxvt.scrollBar              : false
+
+XTerm.faceName               : Terminus
+XTerm.faceSize               : 12
+
+URxvt.font                   : xft:Terminus:pixelsize=14
+URxvt.boldFont               : xft:Terminus:pixelsize=14
+URxvt.italicFont             : xft:Terminus:pixelsize=14
+URxvt.boldItalicFont         : xft:Terminus:pixelsize=14
+
+URxvt.loginShell             : true
+URxvt.scrollWithBuffer       : true
+URxvt.scrollTtyKeypress      : true
+
+URxvt.perl-ext-common        : default,matcher,vtwheel,clipboard
+URxvt.keysym.Shift-Control-C : perl:clipboard:copy
+URxvt.keysym.Shift-Control-V : perl:clipboard:paste
+URxvt.url-launcher           : /usr/bin/dwb
+URxvt.matcher.button         : 1
